@@ -18,7 +18,17 @@ canvas {
 }
 
 #instructions {
-    font-size: 20px;
+    font-size: 15px;
     margin-bottom: 750px;
     padding: 5px;
+}
+
+.play {
+    background-color: green;
+    color: white;
+}
+
+.pause {
+    background-color: blue;
+    color: white;
 }

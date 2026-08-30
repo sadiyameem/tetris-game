@@ -431,6 +431,8 @@ function startCollectingInputs(inputs) {
     window.addEventListener('keyup', (e) => handleKeyEvent(e, undefined));
 }
 
+let isPaused = true;
+
 function main() {
     const ctx = initCanvas();
     const state = getInitialState();
@@ -444,7 +446,11 @@ function main() {
         const dt = Math.min(currentTime - previousTime, MAX_DT);
         previousTime = currentTime;
 
-        update(state, inputs, dt);
+        if (!isPaused) {
+            update(state, inputs, dt);
+            
+        }
+        
         render(ctx, state);
 
         requestAnimationFrame(loop);
@@ -454,3 +460,21 @@ function main() {
 }
 
  main();
+
+ const playButton = document.querySelector('.play');
+ const pauseButton = document.querySelector('.pause');
+
+ pauseButton.disabled = true;
+
+ playButton.addEventListener('click', () => {
+    isPaused = false;
+    pauseButton.disabled = false;
+    playButton.disabled = true;
+ });
+
+ pauseButton.addEventListener('click', () => {
+    isPaused = true;
+    playButton.disabled = false;
+    pauseButton.disabled = true;
+ });
+
