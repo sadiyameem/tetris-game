@@ -9,10 +9,16 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: white;
+    background: lightgray;
 }
 
 canvas {
     border: 20px solid black;
     border-radius: 10px;
+}
+
+#instructions {
+    font-size: 20px;
+    margin-bottom: 750px;
+    padding: 5px;
 }

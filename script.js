@@ -48,14 +48,17 @@ const SHAPE_COLORS = [
 
 const COLOR_SIDEBAR_BORDER = 'gray';
 const COLOR_EMPTY_BLOCK = 'black';
-const COLOR_GAME_OVER_OVERLAY = 'blue';
+const COLOR_GAME_OVER_OVERLAY = 'red';
 const COLOR_FONT = 'white';
 
 const BLOCK_SIZE = 46;
 const BLOCK_BACKGROUND = 'black';
 
-const GRAVITY_SPEED = 10;
+const GRAVITY_SPEED = 1;
+const GRAVITY_ACCELERATION = 0;
+const GRAVITY_THRESHOLD = 1000;
 const GRID_ROWS = 20;
+const GRID_COLS = 10;
 
 const SIDEBAR_BORDER = 20;
 const SIDEBAR_WIDTH_BLOCKS = 6;
@@ -121,7 +124,7 @@ function getInitialState() {
     const initialShapeId = getRandomShapeId();
 
     return {
-        isGameOve: false,
+        isGameOver: false,
         score: 0,
         gravity: {
             progress: 0,
@@ -237,7 +240,7 @@ function rotate(shape) {
     );
 }
 
-function roateCurrentPiece(grid, currentPiece) {
+function rotateCurrentPiece(grid, currentPiece) {
     const {shape,position} = currentPiece;
 
     const newShape = rotate(shape);
@@ -305,7 +308,11 @@ function updateCurrentPiece(state, inputs, dt) {
     }
 
     if (isInputActive('moveDown')) {
-        moveCurrentPiece(state);
+        moveCurrentPieceDown(state);
+    }
+
+    if (isInputActive('rotate')) {
+        rotateCurrentPiece(grid, currentPiece);
     }
 
     if (isInputActive('hardDrop')) {
@@ -335,7 +342,7 @@ function drawShape(ctx, shape, colorId, x,y) {
     for (let i = 0; i < shape.length; i++) {
         for (let j = 0; j < shape[0].length; j++) {
             if (shape[i][j]) {
-                drawBlock(ctx, color, x + j * BLOCK_SIZE, y + i * BLOXK_SIZE);
+                drawBlock(ctx, color, x + j * BLOCK_SIZE, y + i * BLOCK_SIZE);
             }
         }
     }
@@ -382,7 +389,7 @@ function render(ctx, state) {
     ctx.textAlign = 'left';
     ctx.textBaseline = 'top';
 
-    const score = `${state.score}`.padSrare(7,'0');
+    const score = `${state.score}`.padStart(7,'0');
         ctx.fillText('Score:', SIDEBAR_CONTENT_X, SIDEBAR_CONTENT_Y + BLOCK_SIZE * 5);
         ctx.fillText(score, SIDEBAR_CONTENT_X, SIDEBAR_CONTENT_Y + BLOCK_SIZE * 6);
     
@@ -443,5 +450,7 @@ function main() {
         requestAnimationFrame(loop);
     }
 
-    main();
+    requestAnimationFrame(loop);
 }
+
+ main();
